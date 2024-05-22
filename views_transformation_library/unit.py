@@ -25,6 +25,8 @@ def mean(tensor_container):
 
     tensor_container.tensor[tensor_container.tensor == dne] = missing
 
+    init_dtype = tensor_container.tensor.dtype
+
     with warnings.catch_warnings(action="ignore"):
 
         for ifeature in range(tensor_container.tensor.shape[2]):
@@ -32,6 +34,8 @@ def mean(tensor_container):
 
             for ispace in range(tensor_container.tensor.shape[1]):
                 tensor_container.tensor[:, ispace, ifeature] = time_mean[ispace]
+
+    tensor_container.tensor = tensor_container.tensor.astype(init_dtype)
 
     return tensor_container
 
@@ -55,6 +59,8 @@ def demean(tensor_container):
 
     tensor_container.tensor[tensor_container.tensor == dne] = missing
 
+    init_dtype = tensor_container.tensor.dtype
+
     with warnings.catch_warnings(action="ignore"):
 
         for ifeature in range(tensor_container.tensor.shape[2]):
@@ -63,6 +69,8 @@ def demean(tensor_container):
             for ispace in range(tensor_container.tensor.shape[1]):
                 tensor_container.tensor[:, ispace, ifeature] = (tensor_container.tensor[:, ispace, ifeature]
                                                                 .astype(np.float64) - time_mean[ispace])
+
+    tensor_container.tensor = tensor_container.tensor.astype(init_dtype)
 
     return tensor_container
 
